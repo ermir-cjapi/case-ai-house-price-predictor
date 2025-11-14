@@ -14,7 +14,7 @@ async def health():
     return HealthResponse(
         status="healthy",
         message="Multi-model API is running",
-        available_models=["tensorflow", "pytorch", "huggingface", "ensemble"]
+        available_models=["tensorflow", "pytorch", "xgboost", "ensemble"]
     )
 
 

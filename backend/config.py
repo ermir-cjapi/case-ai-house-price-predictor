@@ -6,8 +6,8 @@ import os
 from typing import List, Literal
 
 # Model configuration
-ModelType = Literal['tensorflow', 'pytorch', 'huggingface']
-AVAILABLE_MODEL_TYPES: List[str] = ['tensorflow', 'pytorch', 'huggingface']
+ModelType = Literal['tensorflow', 'pytorch', 'xgboost']
+AVAILABLE_MODEL_TYPES: List[str] = ['tensorflow', 'pytorch', 'xgboost']
 
 # Server configuration
 API_PORT = int(os.environ.get('PORT', 5000))

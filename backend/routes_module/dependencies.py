@@ -9,7 +9,7 @@ from schemas.predict import PredictRequest
 models = {
     'tensorflow': HousePriceModel(model_type='tensorflow'),
     'pytorch': HousePriceModel(model_type='pytorch'),
-    'huggingface': HousePriceModel(model_type='huggingface')
+    'xgboost': HousePriceModel(model_type='xgboost')
 }
 
 # LangGraph router

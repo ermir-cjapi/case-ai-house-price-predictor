@@ -135,7 +135,7 @@ export default function PredictionForm({ modelTrained }: PredictionFormProps) {
                 <option value="auto">Auto (LangGraph decides)</option>
                 <option value="tensorflow">TensorFlow ANN</option>
                 <option value="pytorch">PyTorch ANN</option>
-                <option value="huggingface">Transformer Model</option>
+                <option value="xgboost">XGBoost Model</option>
                 <option value="ensemble">Ensemble (All 3)</option>
               </select>
               <p className="text-xs text-gray-500 mt-1">

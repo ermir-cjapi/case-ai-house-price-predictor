@@ -12,7 +12,7 @@ class PredictRequest(BaseModel):
     median_income: Optional[float] = Field(default=3.5, description="Median income in area")
     house_age: Optional[float] = Field(default=25, description="Age of house in years")
     population: Optional[float] = Field(default=1500, description="Population in area")
-    model_preference: Optional[str] = Field(default="auto", description="Model to use: auto, tensorflow, pytorch, huggingface, ensemble")
+    model_preference: Optional[str] = Field(default="auto", description="Model to use: auto, tensorflow, pytorch, xgboost, ensemble")
     criteria: Optional[Dict] = Field(default=None, description="Criteria for auto model selection")
 
 

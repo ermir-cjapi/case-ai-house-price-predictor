@@ -72,7 +72,7 @@ export default function ModelComparison() {
     )
   }
 
-  const modelTypes = ['tensorflow', 'pytorch', 'huggingface'] as const
+  const modelTypes = ['tensorflow', 'pytorch', 'xgboost'] as const
 
   return (
     <div className="card">

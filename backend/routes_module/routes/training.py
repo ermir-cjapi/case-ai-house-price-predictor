@@ -11,13 +11,13 @@ router = APIRouter()
 
 
 @router.post("/train/{model_type}", response_model=TrainResponse)
-async def train(model_type: Literal['tensorflow', 'pytorch', 'huggingface', 'all'], 
+async def train(model_type: Literal['tensorflow', 'pytorch', 'xgboost', 'all'], 
                 request: TrainRequest):
     """
     Train a specific model or all models
     
     Path parameter:
-        model_type: tensorflow, pytorch, huggingface, or all
+        model_type: tensorflow, pytorch, xgboost, or all
     
     Request body:
         - epochs: number of training epochs (default: 500)
@@ -28,7 +28,7 @@ async def train(model_type: Literal['tensorflow', 'pytorch', 'huggingface', 'all
         if model_type == 'all':
             # Train all models
             results = {}
-            for mt in ['tensorflow', 'pytorch', 'huggingface']:
+            for mt in ['tensorflow', 'pytorch', 'xgboost']:
                 print(f"Training {mt} model...")
                 model = models[mt]
                 metrics = model.train_model(
@@ -69,7 +69,7 @@ async def train(model_type: Literal['tensorflow', 'pytorch', 'huggingface', 'all
 
 
 @router.post("/train/{model_type}/async", response_model=AsyncTrainResponse)
-async def train_async(model_type: Literal['tensorflow', 'pytorch', 'huggingface', 'all'], 
+async def train_async(model_type: Literal['tensorflow', 'pytorch', 'xgboost', 'all'], 
                       request: TrainRequest):
     """
     Submit asynchronous training task for a specific model or all models
@@ -77,7 +77,7 @@ async def train_async(model_type: Literal['tensorflow', 'pytorch', 'huggingface'
     Returns immediately with a task_id that can be used to check status
     
     Path parameter:
-        model_type: tensorflow, pytorch, huggingface, or all
+        model_type: tensorflow, pytorch, xgboost, or all
     
     Request body:
         - epochs: number of training epochs (default: 500)

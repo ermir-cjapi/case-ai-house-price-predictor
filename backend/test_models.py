@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from models.tensorflow_model import TensorFlowModel
 from models.pytorch_model import PyTorchModel
-from models.huggingface_model import HuggingFaceModel
+from models.xgboost_model import XGBoostModel
 from models.base_model import calculate_r2_score
 from router.langgraph_router import create_model_router
 from router.model_selector import select_model_by_criteria, get_model_characteristics
@@ -109,7 +109,7 @@ def test_model_save_load(model, model_name):
     elif 'PyTorch' in model_name:
         new_model = PyTorchModel(input_size=8, hidden_sizes=[64, 32, 16], output_size=1)
     else:
-        new_model = HuggingFaceModel(input_size=8, hidden_sizes=[64, 32, 16], output_size=1)
+        new_model = XGBoostModel(input_size=8, hidden_sizes=[64, 32, 16], output_size=1)
     
     new_model.load(filepath)
     print(f"✓ {model_name} loaded successfully")
@@ -136,7 +136,7 @@ def test_langgraph_router():
     test_cases = [
         {'preference': 'auto', 'criteria': {'priority': 'speed'}, 'expected': 'pytorch'},
         {'preference': 'auto', 'criteria': {'priority': 'accuracy'}, 'expected': 'tensorflow'},
-        {'preference': 'auto', 'criteria': {'priority': 'experimental'}, 'expected': 'huggingface'},
+        {'preference': 'auto', 'criteria': {'priority': 'experimental'}, 'expected': 'xgboost'},
         {'preference': 'tensorflow', 'criteria': {}, 'expected': 'tensorflow'},
         {'preference': 'ensemble', 'criteria': {}, 'expected': 'ensemble'},
     ]
@@ -175,7 +175,7 @@ def test_model_characteristics():
     
     characteristics = get_model_characteristics()
     
-    expected_models = ['tensorflow', 'pytorch', 'huggingface', 'ensemble']
+    expected_models = ['tensorflow', 'pytorch', 'xgboost', 'ensemble']
     
     for model_type in expected_models:
         assert model_type in characteristics, f"{model_type} missing from characteristics"
@@ -211,7 +211,7 @@ def run_all_tests():
         models_to_test = [
             (TensorFlowModel, "TensorFlow"),
             (PyTorchModel, "PyTorch"),
-            (HuggingFaceModel, "Transformer")
+            (XGBoostModel, "XGBoost")
         ]
         
         for model_class, model_name in models_to_test:

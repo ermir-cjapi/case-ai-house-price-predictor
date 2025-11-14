@@ -11,10 +11,10 @@ import os
 from typing import Literal, Optional
 from models.tensorflow_model import TensorFlowModel
 from models.pytorch_model import PyTorchModel
-from models.huggingface_model import HuggingFaceModel
+from models.xgboost_model import XGBoostModel
 from models.base_model import calculate_r2_score
 
-ModelType = Literal['tensorflow', 'pytorch', 'huggingface']
+ModelType = Literal['tensorflow', 'pytorch', 'xgboost']
 
 
 class HousePriceModel:
@@ -25,7 +25,7 @@ class HousePriceModel:
         Initialize model wrapper
         
         Args:
-            model_type: Type of model to use ('tensorflow', 'pytorch', 'huggingface')
+            model_type: Type of model to use ('tensorflow', 'pytorch', 'xgboost')
         """
         self.model_type = model_type
         self.model = None
@@ -103,8 +103,8 @@ class HousePriceModel:
                 output_size=output_size,
                 learning_rate=learning_rate
             )
-        elif self.model_type == 'huggingface':
-            self.model = HuggingFaceModel(
+        elif self.model_type == 'xgboost':
+            self.model = XGBoostModel(
                 input_size=input_size,
                 hidden_sizes=hidden_sizes,
                 output_size=output_size,
@@ -213,8 +213,8 @@ class HousePriceModel:
             self.model = TensorFlowModel(input_size=input_size, hidden_sizes=hidden_sizes, output_size=1)
         elif self.model_type == 'pytorch':
             self.model = PyTorchModel(input_size=input_size, hidden_sizes=hidden_sizes, output_size=1)
-        elif self.model_type == 'huggingface':
-            self.model = HuggingFaceModel(input_size=input_size, hidden_sizes=hidden_sizes, output_size=1)
+        elif self.model_type == 'xgboost':
+            self.model = XGBoostModel(input_size=input_size, hidden_sizes=hidden_sizes, output_size=1)
         
         self.model.load(self.model_path)
         
@@ -273,7 +273,7 @@ def train_all_models(epochs=500, learning_rate=0.001):
     """
     results = {}
     
-    for model_type in ['tensorflow', 'pytorch', 'huggingface']:
+    for model_type in ['tensorflow', 'pytorch', 'xgboost']:
         print(f"\n\n{'#'*70}")
         print(f"# Training {model_type.upper()} Model")
         print(f"{'#'*70}\n")
@@ -304,14 +304,14 @@ if __name__ == "__main__":
     # Check if specific model type is requested
     if len(sys.argv) > 1:
         model_type = sys.argv[1].lower()
-        if model_type in ['tensorflow', 'pytorch', 'huggingface']:
+        if model_type in ['tensorflow', 'pytorch', 'xgboost']:
             model = HousePriceModel(model_type=model_type)
             metrics = model.train_model(epochs=500, learning_rate=0.001)
         elif model_type == 'all':
             results = train_all_models(epochs=500, learning_rate=0.001)
         else:
             print(f"Unknown model type: {model_type}")
-            print("Usage: python train.py [tensorflow|pytorch|huggingface|all]")
+            print("Usage: python train.py [tensorflow|pytorch|xgboost|all]")
     else:
         # Default: train TensorFlow model
         print("Training TensorFlow model (default)")

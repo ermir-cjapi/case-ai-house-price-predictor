@@ -127,7 +127,7 @@ POST /train/{model_type}/async
 ```
 
 **Parameters:**
-- `model_type`: `tensorflow`, `pytorch`, `huggingface`, or `all`
+- `model_type`: `tensorflow`, `pytorch`, `xgboost`, or `all`
 
 **Request Body:**
 ```json

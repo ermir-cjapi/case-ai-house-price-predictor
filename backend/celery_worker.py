@@ -33,7 +33,7 @@ def train_model_async(self, model_type: str, epochs: int = 500,
     Asynchronous model training task with progress tracking
     
     Args:
-        model_type: Type of model to train ('tensorflow', 'pytorch', 'huggingface', 'all')
+        model_type: Type of model to train ('tensorflow', 'pytorch', 'xgboost', 'all')
         epochs: Number of training epochs
         learning_rate: Learning rate for optimizer
         hidden_sizes: Hidden layer sizes
@@ -50,7 +50,7 @@ def train_model_async(self, model_type: str, epochs: int = 500,
         
         if model_type == 'all':
             # Train all models
-            model_types = ['tensorflow', 'pytorch', 'huggingface']
+            model_types = ['tensorflow', 'pytorch', 'xgboost']
             total_models = len(model_types)
             results = {}
             

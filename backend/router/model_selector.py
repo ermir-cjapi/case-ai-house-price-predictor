@@ -6,7 +6,7 @@ based on request parameters and preferences.
 """
 from typing import Dict, Optional, Literal
 
-ModelType = Literal['tensorflow', 'pytorch', 'huggingface', 'ensemble']
+ModelType = Literal['tensorflow', 'pytorch', 'xgboost', 'ensemble']
 
 
 def select_model_by_criteria(
@@ -28,7 +28,7 @@ def select_model_by_criteria(
     """
     # If explicit preference provided, use it
     if model_preference and model_preference != "auto":
-        if model_preference in ['tensorflow', 'pytorch', 'huggingface', 'ensemble']:
+        if model_preference in ['tensorflow', 'pytorch', 'xgboost', 'ensemble']:
             return model_preference
     
     # Default criteria
@@ -51,8 +51,8 @@ def select_model_by_criteria(
         return "tensorflow"
     
     elif priority == "experimental":
-        # Transformer architecture for learning
-        return "huggingface"
+        # XGBoost: best for tabular data
+        return "xgboost"
     
     elif priority == "balanced":
         # Ensemble for best overall results
@@ -63,7 +63,7 @@ def select_model_by_criteria(
         return "tensorflow"  # Most stable
     
     elif use_case == "research":
-        return "huggingface"  # Most interesting
+        return "xgboost"  # Best for tabular analysis
     
     elif use_case == "demo":
         return "pytorch"  # Fast and lightweight
@@ -120,29 +120,29 @@ def get_model_characteristics() -> Dict[str, Dict]:
             "inference_speed": "Very Fast",
             "typical_use": "Research, custom models, rapid prototyping"
         },
-        "huggingface": {
-            "name": "Transformer Model",
-            "architecture": "Transformer Encoder (adapted for tabular)",
-            "layers": "Projection → 2x Transformer Layers → Dense",
-            "parameters": "~15,000+",
-            "framework": "PyTorch + Transformers",
-            "activation": "Self-Attention + ReLU",
-            "optimizer": "Adam",
+        "xgboost": {
+            "name": "XGBoost Model",
+            "architecture": "Gradient Boosted Decision Trees",
+            "layers": "Ensemble of 100 decision trees",
+            "parameters": "Varies with tree depth and count",
+            "framework": "XGBoost",
+            "activation": "Decision rules (if-then logic)",
+            "optimizer": "Gradient Boosting",
             "strengths": [
-                "Attention mechanism",
-                "Captures complex patterns",
-                "State-of-art for NLP",
-                "Transfer learning potential",
-                "Educational value"
+                "Best for tabular data",
+                "Fast training and inference",
+                "Built-in regularization",
+                "Feature importance analysis",
+                "Industry standard"
             ],
-            "best_for": "Learning transformers, experimental approaches",
-            "training_speed": "Slower",
-            "inference_speed": "Medium",
-            "typical_use": "NLP, vision transformers, complex sequences"
+            "best_for": "Structured/tabular data, production systems",
+            "training_speed": "Fast",
+            "inference_speed": "Very Fast",
+            "typical_use": "Tabular data, structured datasets, competitions"
         },
         "ensemble": {
             "name": "Ensemble (All 3 Models)",
-            "architecture": "Combines TensorFlow, PyTorch, and Transformer",
+            "architecture": "Combines TensorFlow, PyTorch, and XGBoost",
             "layers": "Average of all model predictions",
             "parameters": "Sum of all models",
             "framework": "Multi-framework",

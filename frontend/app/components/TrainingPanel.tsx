@@ -180,7 +180,7 @@ export default function TrainingPanel({ onTrainingComplete }: TrainingPanelProps
           >
             <option value="tensorflow">TensorFlow</option>
             <option value="pytorch">PyTorch</option>
-            <option value="huggingface">Hugging Face</option>
+            <option value="xgboost">XGBoost</option>
             <option value="all">All Models</option>
           </select>
           <p className="text-xs text-gray-500 mt-1">

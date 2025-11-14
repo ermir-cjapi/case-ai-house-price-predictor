@@ -96,10 +96,10 @@ def use_pytorch_model(state: ModelState) -> ModelState:
     return state
 
 
-def use_huggingface_model(state: ModelState) -> ModelState:
-    """Node for Hugging Face transformer prediction"""
-    state["selected_model"] = "huggingface"
-    state["explanation"] = "Using Transformer model: Advanced architecture with attention mechanism"
+def use_xgboost_model(state: ModelState) -> ModelState:
+    """Node for XGBoost gradient boosting prediction"""
+    state["selected_model"] = "xgboost"
+    state["explanation"] = "Using XGBoost model: Gradient boosting, best for tabular data"
     
     return state
 
@@ -116,9 +116,9 @@ def ensemble_predictions(state: ModelState) -> ModelState:
     
     # Default ensemble weights (can be adjusted based on validation performance)
     state["ensemble_weights"] = {
-        "tensorflow": 0.4,
+        "tensorflow": 0.3,
         "pytorch": 0.3,
-        "huggingface": 0.3
+        "xgboost": 0.4
     }
     
     return state
@@ -151,7 +151,7 @@ class ModelRouter:
         workflow.add_node("analyze", analyze_request)
         workflow.add_node("select_tensorflow", use_tensorflow_model)
         workflow.add_node("select_pytorch", use_pytorch_model)
-        workflow.add_node("select_huggingface", use_huggingface_model)
+        workflow.add_node("select_xgboost", use_xgboost_model)
         workflow.add_node("ensemble", ensemble_predictions)
         
         # Set entry point
@@ -164,7 +164,7 @@ class ModelRouter:
             {
                 "tensorflow": "select_tensorflow",
                 "pytorch": "select_pytorch",
-                "huggingface": "select_huggingface",
+                "xgboost": "select_xgboost",
                 "ensemble": "ensemble"
             }
         )
@@ -172,7 +172,7 @@ class ModelRouter:
         # All model selection nodes go to END
         workflow.add_edge("select_tensorflow", END)
         workflow.add_edge("select_pytorch", END)
-        workflow.add_edge("select_huggingface", END)
+        workflow.add_edge("select_xgboost", END)
         workflow.add_edge("ensemble", END)
         
         return workflow.compile()
