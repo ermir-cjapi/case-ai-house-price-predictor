@@ -1,5 +1,5 @@
 """Training-related schemas"""
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 
 
@@ -10,6 +10,8 @@ class TrainRequest(BaseModel):
 
 
 class TrainResponse(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     success: bool
     message: str
     model_type: str
@@ -17,6 +19,8 @@ class TrainResponse(BaseModel):
 
 
 class AsyncTrainResponse(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     success: bool
     task_id: str
     message: str

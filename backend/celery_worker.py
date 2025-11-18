@@ -58,7 +58,7 @@ def train_model_async(self, model_type: str, epochs: int = 500,
                 self.update_progress(
                     current=idx,
                     total=total_models,
-                    message=f'Training {mt.upper()} model...'
+                    message=f'Training {mt.upper()} model ({idx + 1}/{total_models})...'
                 )
                 
                 model = HousePriceModel(model_type=mt)
@@ -68,12 +68,8 @@ def train_model_async(self, model_type: str, epochs: int = 500,
                     hidden_sizes=hidden_sizes
                 )
                 results[mt] = metrics
-                
-                self.update_progress(
-                    current=idx + 1,
-                    total=total_models,
-                    message=f'{mt.upper()} model training complete'
-                )
+            
+            # Don't update to 100% - let Celery handle SUCCESS state
             
             return {
                 'success': True,
@@ -91,31 +87,21 @@ def train_model_async(self, model_type: str, epochs: int = 500,
             
             model = HousePriceModel(model_type=model_type)
             
-            # Monkey-patch the model's train method to report progress
-            original_train = model.model.train
-            
-            def train_with_progress(*args, **kwargs):
-                # Extract epochs from kwargs or use default
-                train_epochs = kwargs.get('epochs', epochs)
-                result = original_train(*args, **kwargs)
-                
-                # Update progress after training completes
-                # (In a real scenario, you'd hook into the training loop)
-                self.update_progress(
-                    current=train_epochs,
-                    total=train_epochs,
-                    message=f'Training complete for {model_type.upper()}'
-                )
-                
-                return result
-            
-            model.model.train = train_with_progress
+            # Train the model
+            self.update_progress(
+                current=0,
+                total=epochs,
+                message=f'Training {model_type.upper()} model...'
+            )
             
             metrics = model.train_model(
                 epochs=epochs,
                 learning_rate=learning_rate,
                 hidden_sizes=hidden_sizes
             )
+            
+            # Don't update progress to 100% - let Celery set SUCCESS state automatically
+            # when the function returns successfully
             
             return {
                 'success': True,

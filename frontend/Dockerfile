@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci
 
 # Stage 2: Builder
 FROM node:18-alpine AS builder
@@ -32,9 +32,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy necessary files
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Set ownership
 RUN chown -R nextjs:nodejs /app

@@ -88,7 +88,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - BACKEND_URL=http://backend:5000
+      - BACKEND_URL=http://backend:5000  # Server-side (Next.js API routes use Docker internal hostname)
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:5000  # Client-side (browser uses localhost)
       - NODE_ENV=production
     depends_on:
       - backend

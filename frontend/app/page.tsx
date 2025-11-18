@@ -16,9 +16,14 @@ export default function Home() {
 
   const checkModelStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/model-info')
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
+      const response = await fetch(`${backendUrl}/models/status`)
       const data = await response.json()
-      setModelTrained(data.trained || false)
+      // Check if any model is trained
+      const anyModelTrained = data.models && Object.values(data.models).some(
+        (model: any) => model.trained === true
+      )
+      setModelTrained(anyModelTrained)
     } catch (error) {
       console.error('Error checking model status:', error)
       setModelTrained(false)

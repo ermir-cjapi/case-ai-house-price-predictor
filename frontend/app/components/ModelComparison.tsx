@@ -34,7 +34,8 @@ export default function ModelComparison() {
 
   const fetchModelStatus = async () => {
     try {
-      const response = await fetch('/api/models/status')
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000'
+      const response = await fetch(`${backendUrl}/models/status`)
       const data = await response.json()
 
       if (data.success) {

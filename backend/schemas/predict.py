@@ -1,9 +1,11 @@
 """Prediction-related schemas"""
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, Dict
 
 
 class PredictRequest(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     sqft: float = Field(..., description="Square footage of the house")
     bedrooms: float = Field(..., description="Number of bedrooms")
     bathrooms: float = Field(..., description="Number of bathrooms")
@@ -17,6 +19,8 @@ class PredictRequest(BaseModel):
 
 
 class PredictResponse(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     success: bool
     predicted_price: Optional[float] = None
     predicted_price_formatted: Optional[str] = None
